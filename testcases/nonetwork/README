@@ -1,0 +1,4 @@
+Sets up a machine with no network interface.
+
+The status of the installed machine is found by mounting the root volume
+and inspecting the logs.

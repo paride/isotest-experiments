@@ -1,0 +1,66 @@
+Welcome:
+  lang: en_US
+Refresh:
+  channel: ${ISOTEST_SUBIQUITY_CHANNEL}
+  update: yes
+Keyboard:
+  layout: us
+Installpath:
+  path: ubuntu
+Network:
+  accept-default: yes
+Proxy:
+  proxy: ""
+Mirror:
+  country-code: gb
+Filesystem:
+  manual:
+    - obj: [disk index 0]
+      action: MAKE_BOOT
+    - obj: [disk index 0]
+      action: PARTITION
+      data:
+        size: 1G
+        mount: /boot
+    - obj: [disk index 1]
+      action: PARTITION
+      data:
+        size: 4G
+        fstype: null
+    - obj: [disk index 2]
+      action: PARTITION
+      data:
+        size: 4G
+        fstype: null
+    - action: create-raid
+      data:
+        name: md1
+        level: 1
+        devices:
+          - [disk index 1, part 0]
+          - active
+          - [disk index 2, part 0]
+          - active
+    - obj: [raid name md1]
+      action: PARTITION
+      data:
+        fstype: ext4
+        mount: /
+    - action: done
+Identity:
+  realname: Ubuntu
+  username: ubuntu
+  hostname: ${ISOTEST_HOSTNAME}
+  # ubuntu
+  password: '$6$wdAcoXrU039hKYPd$508Qvbe7ObUnxoj15DRCkzC3qO7edjH0VV7BPNRDYK4QR8ofJaEEF2heacn0QgD.f8pO8SNp83XNdWG6tocBM1'
+SSH:
+  install_server: true
+  authorized_keys:
+    - ${ISOTEST_SSH_PUBKEY}
+SnapList:
+  snaps:
+    hello:
+      channel: stable
+      is_classic: false
+InstallProgress:
+  reboot: ${ISOTEST_REBOOT}

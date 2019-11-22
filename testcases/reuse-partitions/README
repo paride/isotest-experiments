@@ -1,0 +1,5 @@
+A test to check if we successfully mounted an existing partition.
+
+ 1. Create a partitioned volume with some known data in a partition
+ 2. Install Ubuntu
+ 3. Check if the known data is still there

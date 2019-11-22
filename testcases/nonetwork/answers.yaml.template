@@ -1,0 +1,35 @@
+Welcome:
+  lang: en_US
+Refresh:
+  channel: ${ISOTEST_SUBIQUITY_CHANNEL}
+  update: ${ISOTEST_SUBIQUITY_REFRESH}
+Keyboard:
+  layout: us
+Zdev:
+  accept-default: yes
+Network:
+  accept-default: yes
+Proxy:
+  proxy: ""
+Mirror:
+  country-code: gb
+Filesystem:
+  guided: yes
+  guided-index: 0
+Identity:
+  realname: Ubuntu
+  username: ubuntu
+  hostname: ${ISOTEST_HOSTNAME}
+  # ubuntu
+  password: '$6$wdAcoXrU039hKYPd$508Qvbe7ObUnxoj15DRCkzC3qO7edjH0VV7BPNRDYK4QR8ofJaEEF2heacn0QgD.f8pO8SNp83XNdWG6tocBM1'
+SSH:
+  install_server: true
+  authorized_keys:
+    - ${ISOTEST_SSH_PUBKEY}
+SnapList:
+  snaps:
+    hello:
+      channel: stable
+      is_classic: false
+InstallProgress:
+  reboot: ${ISOTEST_REBOOT}
