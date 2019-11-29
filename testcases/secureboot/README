@@ -1,9 +1,1 @@
 Boot a VM with Secure Boot enabled.
-
-While Secure Boot is enabled, no key appears to be actually enrolled:
-
-$ mokutil --sb-state 
-SecureBoot disabled
-Platform is in Setup Mode
-
-FIXME: can we enable Secure Boot with signature verification?
