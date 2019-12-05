@@ -226,6 +226,26 @@ wait_for_vm() {
     info "VM online with IP address: $vm_ip"
 }
 
+vm_shutdown() {
+    info "Shutting down $vm_name"
+    virsh shutdown "$vm_name"
+    for ((i=0; i<30; i++)); do
+        sleep 5
+        virsh list --name | grep -q "$vm_name" || return 0
+    done
+    return 1
+}
+
+vm_reboot() {
+    # With 'virsh reboot' checking that the VM actually rebooted (went down
+    # and up) is not completely straightforward. It is easier to shutdown it
+    # and then start it again.
+    info "Rebooting $vm_name"
+    vm_shutdown "$vm_name" || return 1
+    virsh start "$vm_name" || return 1
+    wait_for_vm || return 1
+}
+
 read_testcase() {
     if [[ -f $testcasedir/README ]]; then
         info "Testcase README:"
