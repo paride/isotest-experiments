@@ -213,16 +213,16 @@ install_vm() {
 }
 
 wait_for_vm() {
-    info "Install finished, waiting for VM to reboot"
+    info "Waiting for VM to boot"
     declare -i online=0
-    for ((i=0; i<40; i++)); do
-        virsh list --name | grep -q "$vm_name" || fail "VM not found (externally destroyed?)"
+    for ((i=0; i<60; i++)); do
+        virsh list --name --all | grep -q "$vm_name" || return 1
         sleep 5
 	vm_ip=$(get_vm_ip) || continue
         sshvm "ubuntu@$vm_ip" true && online=1 && break
     done
 
-    ((online)) || fail "Failed to connect to VM $vm_name"
+    ((online)) || return 1
     info "VM online with IP address: $vm_ip"
 }
 
@@ -323,7 +323,7 @@ if ! xmlstarlet sel -Q -t -c 'domain/devices/interface' "${workdir}/${vm_name}.x
 fi
 
 if ((vm_has_network)); then
-    wait_for_vm
+    wait_for_vm || fail "Failed to connect to VM $vm_name"
 
     info "Setting up the VM for passwordless sudo"
     sshvm "ubuntu@$vm_ip" 'echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /tmp/sudo-nopasswd'
