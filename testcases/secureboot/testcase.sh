@@ -9,5 +9,7 @@ virt_install_opts() {
 
 isotest_test_secureboot() {
     sshvm "ubuntu@$vm_ip" mokutil --sb-state | grep "SecureBoot enabled" || return 1
-    sshvm "ubuntu@$vm_ip" bootctl 2>&1 | grep "Secure Boot: enabled" || return 1
+
+    # Ignore the bootctl return code (returns 1 on Bionic)
+    sshvm "ubuntu@$vm_ip" 'bootctl 2>/dev/null || true' | grep "Secure Boot: enabled" || return 1
 }
